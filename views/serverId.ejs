@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="serverTitle">Server</title>
+    <link rel="stylesheet" href="/css/serverId.css">
+
+</head>
+<body data-user-id="<%= userId %>">
+    <div class="container">
+        <!-- Server Sidebar -->
+        <div class="server-sidebar">
+            <div class="server-header" onclick="toggleServerMenu()">
+                <img id="server-icon" src="/images/<%= serverIcon %>">
+                <div class="server-name" id="serverNameHeader">Loading...</div>
+                <span class="dropdown-icon">▼</span>
+            </div>
+
+            <!-- Server Menu Dropdown -->
+            <div class="server-menu" id="serverMenu">
+                <div class="menu-item" onclick="openInviteModal()">
+                    <span>📨</span> Invite People
+                </div>
+                <div class="menu-item" onclick="openEditServerModal()" id="editServerBtn" >
+                    <span>✏️</span> Edit Server
+                </div>
+                <div class="menu-item" onclick="openRolesModal()" id="rolesBtn">
+                    <span>🎭</span> Manage Roles
+                </div>
+                <div class="menu-divider"></div>
+                <div class="menu-item danger" onclick="leaveServer()">
+                    <span>🚪</span> Leave Server
+                </div>
+            </div>
+
+            <!-- Channels -->
+            <div class="channels-section">
+                <div class="channel-category">
+                    <div class="category-header">
+                        <span>Text Channels</span>
+                        <span class="add-channel-btn" onclick="openCreateChannelModal('text')" id="addTextChannelBtn" >+</span>
+                    </div>
+                    <div id="textChannelsList"></div>
+                </div>
+
+                <div class="channel-category">
+                    <div class="category-header">
+                        <span>Voice Channels</span>
+                        <span class="add-channel-btn" onclick="openCreateChannelModal('voice')" id="addVoiceChannelBtn" >+</span>
+                    </div>
+                    <div id="voiceChannelsList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-header">
+                <span class="channel-icon" id="currentChannelIcon">#</span>
+                <h2 id="currentChannelName">general</h2>
+            </div>
+
+            <!-- Text Chat Container -->
+            <div class="text-chat-container" id="textChatContainer">
+                <div class="messages-area" id="messagesArea">
+                    <div class="empty-state">Welcome to the channel!</div>
+                </div>
+
+                <!-- Reply Preview -->
+                <div id="replyPreview" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #40444b; border-left: 3px solid #5865f2; margin-bottom: 8px; border-radius: 4px;">
+                        <div>
+                            <div style="font-size: 12px; color: #b9bbbe;">Replying to <span id="replyToUser" style="font-weight: 600;"></span></div>
+                            <div id="replyToContent" style="font-size: 13px; color: #dcddde; margin-top: 2px; max-width: 500px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"></div>
+                        </div>
+                        <button onclick="cancelReply()" style="background: none; border: none; color: #b9bbbe; cursor: pointer; font-size: 18px;">×</button>
+                    </div>
+                </div>
+
+                <!-- Edit Mode Indicator -->
+                <div id="editModeIndicator" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #40444b; border-left: 3px solid #faa61a; margin-bottom: 8px; border-radius: 4px;">
+                        <div style="font-size: 12px; color: #b9bbbe;">
+                            Editing message • <span style="color: #00aff4; cursor: pointer;" onclick="cancelEdit()">Cancel</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- File Preview -->
+                <div id="filePreview" style="display: none; flex-wrap: wrap; gap: 8px; padding: 8px; background: #2f3136; border-radius: 4px; margin-bottom: 8px;"></div>
+
+                <!-- Message Input Area -->
+                <div class="input-area" style="display: flex; align-items: center; gap: 8px;">
+                    <input type="file" id="messageFileInput" multiple accept="image/*,video/*,.gif,.mp3" 
+                           style="display: none;" onchange="updateFilePreview()">
+                    <button onclick="triggerFileInput()" class="icon-btn" title="Attach files">➕</button>
+                    <input type="text" class="message-input" id="messageInput" placeholder="Message #channel" 
+                           onkeypress="handleMessageKeyPress(event)">
+                    <button onclick="sendMessage()" class="send-btn">Send</button>
+                </div>
+            </div>
+
+            <!-- Voice Chat Container -->
+            <div class="voice-chat-container" id="voiceChatContainer">
+                <div class="voice-header">
+                    <div class="voice-title">🔊 Voice Channel</div>
+                    <div class="voice-controls-top">
+                        <button class="voice-control-btn" id="toggleScreenShareBtn" onclick="toggleScreenShare()">
+                            🖥️ Share Screen
+                        </button>
+                    </div>
+                </div>
+                <div id="video-grid"></div>
+            </div>
+        </div>
+
+        <!-- Members Sidebar -->
+        <div class="members-sidebar">
+            <div class="members-section">
+                <div class="members-title">Members</div>
+                <div id="membersList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voice Bottom Controls -->
+    <div class="voice-bottom-controls" id="voiceBottomControls">
+        <button class="voice-control-btn" id="toggleMicBtn" onclick="toggleMicrophone()">
+            🎤 Mute
+        </button>
+        <button class="voice-control-btn" id="toggleCameraBtn" onclick="toggleCamera()">
+            📹 Stop Video
+        </button>
+        <button class="voice-control-btn danger" onclick="disconnectVoice()">
+            📞 Disconnect
+        </button>
+    </div>
+
+    <!-- Message Context Menu -->
+    <div id="messageContextMenu" class="context-menu" style="display: none;">
+        <div class="context-menu-item" onclick="editMessage()">
+            <span>✏️</span>
+            <span>Edit Message</span>
+            <span class="context-menu-shortcut">Shift+Click</span>
+        </div>
+        <div class="context-menu-item" onclick="replyToMessage()">
+            <span>↩️</span>
+            <span>Reply</span>
+        </div>
+        <div class="context-menu-item danger" onclick="deleteMessage()">
+            <span>🗑️</span>
+            <span>Delete Message</span>
+        </div>
+    </div>
+
+    <!-- Modals (keeping all your existing modals) -->
+    <div class="modal-overlay" id="inviteModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Invite Friends</h3>
+                <button class="modal-close" onclick="closeModal('inviteModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Share this invite link</label>
+                    <div class="invite-link-container">
+                        <div class="invite-link" id="inviteLink">Generating...</div>
+                        <button class="copy-btn" onclick="copyInviteLink()">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="createChannelModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="createChannelTitle">Create Channel</h3>
+                <button class="modal-close" onclick="closeModal('createChannelModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="createChannelForm" onsubmit="createChannel(event)">
+                    <div class="form-group">
+                        <label class="form-label">Channel Name</label>
+                        <input type="text" class="form-input" id="channelName" required>
+                    </div>
+                    <input type="hidden" id="channelType">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('createChannelModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="createChannel()">Create</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="editServerModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Server</h3>
+                <button class="modal-close" onclick="closeModal('editServerModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="editServerForm">
+                    <div class="form-group">
+                        <label class="form-label">Server Name</label>
+                        <input type="text" class="form-input" id="editServerName" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('editServerModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="updateServer()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="rolesModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Manage Roles</h3>
+                <button class="modal-close" onclick="closeModal('rolesModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <button class="btn btn-primary" onclick="openCreateRoleModal()" style="width: 100%; margin-bottom: 16px;">
+                    ➕ Create Role
+                </button>
+                <div id="rolesList"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="createRoleModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Create Role</h3>
+                <button class="modal-close" onclick="closeModal('createRoleModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="createRoleForm">
+                    <div class="form-group">
+                        <label class="form-label">Role Name</label>
+                        <input type="text" class="form-input" id="roleName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Role Color</label>
+                        <input type="color" class="color-picker" id="roleColor" value="#5865f2">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('createRoleModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="createRole()">Create</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="memberContextModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="memberContextName">Member Actions</h3>
+                <button class="modal-close" onclick="closeModal('memberContextModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <button class="btn btn-danger" onclick="kickMember()" style="width: 100%; margin-bottom: 8px;">
+                    Kick from Server
+                </button>
+                <button class="btn btn-danger" onclick="banMember()" style="width: 100%;">
+                    Ban from Server
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Socket.IO and PeerJS -->
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="https://unpkg.com/peerjs@1.5.0/dist/peerjs.min.js"></script>
+    
+    <!-- Load your existing server JS -->
+    <script src="/js/serverId.js"></script>
+</body>
+</html>

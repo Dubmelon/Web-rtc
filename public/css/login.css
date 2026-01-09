@@ -1,0 +1,117 @@
+  * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green-dark: #284139;
+            --green-light: #80906e;
+            --beige: #f8e794;
+            --orange: #b86890;
+            --black: #111419;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, var(--green-dark) 0%, #1a2f28 100%);
+            color: var(--beige);
+        }
+
+        /* ============ LOGIN PAGE ============ */
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .form-container {
+            background: rgba(17, 20, 25, 0.85);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--green-light);
+            border-radius: 20px;
+            padding: 3rem 2.5rem;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .form-container h2 {
+            color: var(--beige);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--green-light);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: rgba(128, 144, 110, 0.15);
+            border: 2px solid var(--green-light);
+            border-radius: 10px;
+            font-size: 1rem;
+            color: var(--beige);
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--beige);
+            background: rgba(128, 144, 110, 0.25);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(128, 144, 110, 0.6);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--orange) 0%, #a05577 100%);
+            border: none;
+            border-radius: 10px;
+            color: var(--beige);
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(184, 104, 144, 0.4);
+        }
+
+        .form-container p {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--green-light);
+            font-size: 0.95rem;
+        }
+
+        .form-container a {
+            color: var(--beige);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .form-container a:hover {
+            color: var(--orange);
+        }

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/home.css">
+    <title>Home - Video Chat Platform</title>
+</head>
+<body>
+    <!-- Notification Bell -->
+    <div class="header-notifications">
+        <div class="notification-bell" id="notificationBell">
+            <span class="notification-bell-icon">🔔</span>
+            <span id="notificationBadge" class="notification-badge" style="display: none;">0</span>
+        </div>
+
+        <div class="notification-dropdown" id="notificationDropdown">
+            <div class="notification-header">
+                <h3>Notifications</h3>
+            </div>
+
+            <div class="notification-tabs">
+                <button class="notification-tab active" data-tab="all">All</button>
+                <button class="notification-tab" data-tab="friends">Friends</button>
+                <button class="notification-tab" data-tab="messages">Messages</button>
+            </div>
+
+            <div class="notification-list" id="notificationList">
+                <div class="notification-empty">
+                    <div class="notification-empty-icon">🔔</div>
+                    <p>No notifications yet</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="home-container">
+        <div class="welcome-section">
+            <h1>Welcome, <%= user.name %>!</h1>
+            <p>Choose where you'd like to go</p>
+        </div>
+
+        <div class="navigation-grid">
+            <a href="/create-servers" class="nav-card">
+                <div class="nav-card-content">
+                    <span class="nav-icon">🖥️</span>
+                    <div class="nav-title">Server Creator </div>
+                    <div class="nav-description">Create a server!</div>
+                </div>
+            </a>
+
+            <a href="/room" class="nav-card featured">
+                <div class="nav-card-content">
+                    <span class="nav-icon">📞</span>
+                    <div class="nav-title">Calls</div>
+                    <div class="nav-description">Join a random Call!</div>
+                </div>
+            </a>
+
+            <a href="/conversations/id" class="nav-card">
+                <div class="nav-card-content">
+                    <span class="nav-icon">💬</span>
+                    <div class="nav-title">Direct Messages</div>
+                    <div class="nav-description">Chat privately with your contacts</div>
+                </div>
+            </a>
+
+            <a href="/friends" class="nav-card">
+                <div class="nav-card-content">
+                    <span class="nav-icon">👥</span>
+                    <div class="nav-title">Friends</div>
+                    <div class="nav-description">Manage your friends and connections</div>
+                </div>
+            </a>
+
+            <a href="/sharing" class="nav-card">
+                <div class="nav-card-content">
+                    <span class="nav-icon">📺</span>
+                    <div class="nav-title">Streams</div>
+                    <div class="nav-description">Watch or broadcast live streams</div>
+                </div>
+            </a>
+                    <a href="/serverDiscover" class="nav-card">
+                <div class="nav-card-content">
+                    <span class="nav-icon">🖥️</span>
+                    <div class="nav-title">Discover Servers!</div>
+                    <div class="nav-description">Find or view servers you are in, and any server that exists!</div>
+                </div>
+            </a>
+            
+            <a href="/profile" class="nav-card">
+                <div class="nav-card-content">
+                    <% if (hasPfp) { %>
+                        <img src="/images/<%= user.pfp.fileId %>" alt="Profile Picture"
+                            style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
+                    <% } else { %>
+                        <div style="width: 150px; height: 150px; border-radius: 50%; background: #ccc; display: flex; align-items: center; justify-content: center;">
+                            <span>No Photo</span>
+                        </div>
+                    <% } %>
+                    <div class="nav-title">Profile</div>
+                    <div class="nav-description">Edit or configure your profile</div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <script> window.currentUserId = '<%= userId %>' </script>
+    <script src="/js/home.js"></script>
+</body>
+</html>

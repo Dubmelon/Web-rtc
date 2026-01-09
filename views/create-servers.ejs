@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Server</title>
+    <link rel="stylesheet" href="/css/server.css">
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Create Your Server</h1>
+        <p class="subtitle">Give your server a personality with a name and icon</p>
+
+        <div class="success-message" id="successMessage">
+            Server created successfully! Redirecting...
+        </div>
+
+        <form id="createServerForm">
+            <div class="form-group">
+                <label for="serverName">Server Name *</label>
+                <input 
+                    type="text" 
+                    id="serverName" 
+                    name="name" 
+                    placeholder="Enter server name"
+                    maxlength="50"
+                    required
+                >
+                <div class="char-count">
+                    <span id="nameCount">0</span>/50
+                </div>
+                <div class="error" id="nameError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="serverDescription">Description (Optional)</label>
+                <textarea 
+                    id="serverDescription" 
+                    name="description" 
+                    placeholder="What's your server about?"
+                    maxlength="200"
+                ></textarea>
+                <div class="char-count">
+                    <span id="descCount">0</span>/200
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Server Icon (Optional)</label>
+                <div class="image-upload">
+                    <div class="image-preview" id="imagePreview">
+                        <span class="image-preview-placeholder" id="previewPlaceholder">🖼️</span>
+                        <img id="previewImage" style="display: none;" alt="Server icon preview">
+                    </div>
+                    <div>
+                        <button type="button" class="upload-btn" onclick="document.getElementById('serverIcon').click()">
+                            Choose Image
+                        </button>
+                        <input 
+                            type="file" 
+                            id="serverIcon" 
+                            accept="image/*"
+                        >
+                        <p style="font-size: 12px; color: #f8e794; margin-top: 8px;">
+                            Recommended: Square image, at least 512x512px
+                        </p>
+                    </div>
+                </div>
+                <div class="error" id="iconError"></div>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="cancel-btn" onclick="window.history.back()">
+                    Cancel
+                </button>
+                <button type="submit" id="submitBtn">
+                    Create Server
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script src="/js/server.js">
+        window.currentUserId = userId
+    </script>
+</body>
+</html>

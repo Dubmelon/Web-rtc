@@ -1,0 +1,246 @@
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #284139 0%,#80906e 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: #80906e;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header h1 {
+            color: #f8e794;
+            font-size: 32px;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .filter-dropdown {
+            padding: 12px 20px;
+            border: 2px solid #c55a1d;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #f8e794;
+            background: #c55a1d;
+            cursor: pointer;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .filter-dropdown:hover {
+            border-color: #c55a1d;
+            background: #c55a1d;
+        }
+
+        .filter-dropdown:focus {
+            border-color: #80906e;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .create-server-btn {
+            background: #c55a1d;
+            color: #f8e794;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .create-server-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .servers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .server-card {
+            background: #80906e;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .server-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .server-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #80906e 0%, #284139 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: #f8e794;
+            margin: 0 auto 20px;
+            object-fit: cover;
+        }
+
+        .server-icon img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .server-name {
+            font-size: 22px;
+            font-weight: 600;
+            color: #f8e794;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .server-description {
+            font-size: 14px;
+            color: #f8e794;
+            text-align: center;
+            margin-bottom: 15px;
+            min-height: 40px;
+        }
+
+        .server-info {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #f8e794;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #f8e794;
+            text-transform: uppercase;
+        }
+
+        .info-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f8e794;
+            margin-top: 5px;
+        }
+
+        .owner-badge {
+            background: #c55a1d;
+            color: #f8e794;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .no-servers {
+            background: #80906e;
+            padding: 60px 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .no-servers h2 {
+            color: #f8e794;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .no-servers p {
+            color: #f8e794;
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: #f8e794;
+        }
+
+        .join-server-btn {
+            background: #28a745;
+            color: #f8e794;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .join-server-btn:hover {
+            background: #218838;
+            transform: translateY(-1px);
+        }
+
+        .joined-badge {
+            background: #28a745;
+            color: #f8e794;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .servers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }

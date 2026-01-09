@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friends & Users</title>
+    <link rel="stylesheet" href="/css/friends.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Friends & Users</h1>
+            <div class="view-selector">
+                <label for="viewSelect">View:</label>
+                <select id="viewSelect" class="dropdown">
+                    <option value="friends">Friends Only</option>
+                    <option value="all">All Users</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Friends Section -->
+        <div id="friendsSection" class="user-grid">
+            <% if (friends && friends.length > 0) { %>
+                <% friends.forEach(friend => { %>
+                    <div class="user-card friend-item" id="user-<%= friend._id %>">
+                        <% if (friend.pfp && friend.pfp.fileId) { %>
+                            <img src="/images/<%= friend.pfp.fileId %>" alt="<%= friend.name %>'s picture" class="profile-picture">
+                        <% } else { %>
+                            <div class="no-photo"><%= friend.name.charAt(0).toUpperCase() %></div>
+                        <% } %>
+                        <div class="user-name"><%= friend.name %></div>
+                        <span class="friend-badge">Friend</span>
+                        <div class="controls">
+                            <button class="control-btn message" onclick="sendMessage('<%= friend._id %>')">
+                                💬 Message
+                            </button>
+                            <button class="control-btn" onclick="viewProfile('<%= friend._id %>')" title="View Profile">
+                                👤 Profile
+                            </button>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="empty-state">
+                    <div class="empty-state-icon">👥</div>
+                    <h2>No Friends Yet</h2>
+                    <p>Start adding friends to see them here!</p>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- All Users Section -->
+        <div id="usersSection" class="user-grid hidden">
+            <% if (users && users.length > 0) { %>
+                <% let hasOtherUsers = false; %>
+                <% users.forEach(user => { %>
+                    <% if (user._id.toString() !== currentUserId.toString()) { %>
+                        <% hasOtherUsers = true; %>
+                        <div class="user-card all-user-item" id="user-<%= user._id %>">
+                            <% if (user.pfp && user.pfp.fileId) { %>
+                                <img src="/images/<%= user.pfp.fileId %>" alt="<%= user.name %>'s picture" class="profile-picture">
+                            <% } else { %>
+                                <div class="no-photo"><%= user.name.charAt(0).toUpperCase() %></div>
+                            <% } %>
+                            <div class="user-name"><%= user.name %></div>
+                            <div class="controls">
+                                <% if (friends.some(f => f._id.toString() === user._id.toString())) { %>
+                                    <span class="friend-badge">Friend</span>
+                                    <button class="control-btn message" onclick="sendMessage('<%= user._id %>')">
+                                        💬 Message
+                                    </button>
+                                <% } else { %>
+                                    <button class="control-btn" onclick="addFriend('<%= user._id %>')" title="Add Friend">
+                                        ➕ Add Friend
+                                    </button>
+                                <% } %>
+                                <button class="control-btn" onclick="viewProfile('<%= user._id %>')" title="View Profile">
+                                    👤 Profile
+                                </button>
+                            </div>
+                        </div>
+                    <% } %>
+                <% }) %>
+                <% if (!hasOtherUsers) { %>
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🔍</div>
+                        <h2>No Users Found</h2>
+                        <p>There are no other users to display.</p>
+                    </div>
+                <% } %>
+            <% } else { %>
+                <div class="empty-state">
+                    <div class="empty-state-icon">🔍</div>
+                    <h2>No Users Found</h2>
+                    <p>There are no other users to display.</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <script src="/js/firends.js"></script>
+</body>
+</html>

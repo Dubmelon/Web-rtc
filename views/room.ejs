@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Chat - Room</title>
+    <link rel="stylesheet" href="/css/room.css">
+    <script>
+        const ROOM_ID = "<%= roomId %>"
+    </script>
+    
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <div class="room-info">
+                <div class="room-title">Random Call</div>
+                <div class="room-id">Room: <span id="room-id-display"></span></div>
+            </div>
+        </div>
+        <div class="participant-count">
+            <span id="participant-count">0</span> Participants
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div id="video-grid"></div>
+        <div id="empty-state" class="empty-state">
+            <h2>Waiting for participants...</h2>
+            <p>Share the room link to invite others</p>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="control-btn" id="toggle-video" title="Toggle Camera">
+            <span id="video-icon">📹</span>
+        </button>
+        <button class="control-btn" id="toggle-audio" title="Toggle Microphone">
+            <span id="audio-icon">🎤</span>
+        </button>
+        <button class="control-btn danger" id="leave-call" title="Leave Call">
+            <span>📞</span>
+        </button>
+    </div>
+
+    <!-- Load scripts at the END of body, in correct order -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://unpkg.com/peerjs@1.5.5/dist/peerjs.min.js"></script>
+    <script src="/js/room-script.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+
+    <link rel="stylesheet" href="/css/conversations.css">
+</head>
+<body>
+    <div id="app" data-user-id="<%= userId %>"></div>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1>Messages</h1>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search conversations...">
+                </div>
+            </div>
+            <div class="conversations-list" id="conversationsList">
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="chat-area">
+            <div id="chatContent">
+                <div class="empty-state">
+                    <div class="empty-state-icon">💬</div>
+                    <h2>Select a conversation</h2>
+                    <p>Choose a conversation from the sidebar to start messaging</p>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="/js/messages.js"></script>
+</body>
+</html>

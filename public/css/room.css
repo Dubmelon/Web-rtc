@@ -1,0 +1,348 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --green-dark: #284139;
+    --green-light: #80906e;
+    --beige: #f8e794;
+    --orange: #b86890;
+    --black: #111419;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, var(--green-dark) 0%, #1a2f28 100%);
+    color: var(--beige);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.video-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.header {
+    background: rgba(17, 20, 25, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1.25rem 2rem;
+    border-bottom: 2px solid var(--green-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.room-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.room-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--beige);
+}
+
+.room-id {
+    font-size: 0.85rem;
+    color: var(--green-light);
+    font-family: 'Courier New', monospace;
+    margin-top: 0.25rem;
+}
+
+.participant-count {
+    background: linear-gradient(135deg, var(--green-light) 0%, var(--green-dark) 100%);
+    color: var(--beige);
+    padding: 0.5rem 1.25rem;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border: 2px solid var(--green-light);
+}
+
+.main-container {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+#video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Video container wrapper for each participant */
+.video-container {
+    position: relative;
+    background: var(--black);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 3px solid var(--green-light);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s;
+    aspect-ratio: 4/3;
+}
+
+.video-container:hover {
+    transform: scale(1.02);
+    border-color: var(--beige);
+    box-shadow: 0 12px 32px rgba(184, 104, 144, 0.3);
+}
+
+.video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* For backwards compatibility - direct video children */
+#video-grid > video {
+    background: var(--black);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 3px solid var(--green-light);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 4/3;
+    transition: all 0.3s;
+}
+
+#video-grid > video:hover {
+    transform: scale(1.02);
+    border-color: var(--beige);
+    box-shadow: 0 12px 32px rgba(184, 104, 144, 0.3);
+}
+
+/* Video controls overlay */
+.video-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(17, 20, 25, 0.95) 0%, rgba(17, 20, 25, 0.7) 70%, transparent 100%);
+    backdrop-filter: blur(5px);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+}
+
+.video-container:hover .video-controls {
+    opacity: 1;
+}
+
+/* Volume label */
+.volume-label {
+    color: var(--beige);
+    font-size: 0.75rem;
+    font-weight: 600;
+    min-width: 50px;
+    text-align: center;
+}
+
+/* Volume slider */
+.volume-slider {
+    flex: 1;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(128, 144, 110, 0.3);
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--beige);
+    border: 2px solid var(--green-light);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+    background: var(--green-light);
+    transform: scale(1.2);
+}
+
+.volume-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: var(--beige);
+    border: 2px solid var(--green-light);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.volume-slider::-moz-range-thumb:hover {
+    background: var(--green-light);
+    transform: scale(1.2);
+}
+
+/* Control buttons inside video controls */
+.video-controls .control-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--green-light);
+    background: var(--green-dark);
+    color: var(--beige);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    padding: 0;
+}
+
+.video-controls .control-btn:hover {
+    background: var(--green-light);
+    transform: scale(1.1);
+}
+
+.video-controls .control-btn.muted {
+    background: var(--orange);
+    border-color: var(--orange);
+}
+
+/* Main controls at bottom */
+.controls {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(17, 20, 25, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    border: 2px solid var(--green-light);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    display: flex;
+    gap: 1rem;
+    z-index: 1000;
+}
+
+.controls .control-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 2px solid var(--green-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: all 0.3s;
+    background: var(--green-dark);
+    color: var(--beige);
+}
+
+.controls .control-btn:hover {
+    transform: scale(1.1);
+    background: var(--green-light);
+    box-shadow: 0 6px 20px rgba(128, 144, 110, 0.4);
+}
+
+.controls .control-btn.danger {
+    background: var(--orange);
+    border-color: var(--orange);
+}
+
+.controls .control-btn.danger:hover {
+    background: #a05577;
+    box-shadow: 0 6px 20px rgba(184, 104, 144, 0.5);
+}
+
+.controls .control-btn.off {
+    background: #9d4444;
+    border-color: #9d4444;
+    opacity: 0.9;
+}
+
+.controls .control-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--beige);
+    padding: 4rem 2rem;
+}
+
+.empty-state h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--beige);
+}
+
+.empty-state p {
+    font-size: 1.1rem;
+    color: var(--green-light);
+}
+
+@media (max-width: 768px) {
+    #video-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .header {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .controls {
+        padding: 0.75rem 1.5rem;
+        gap: 0.75rem;
+    }
+
+    .controls .control-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+    }
+
+    .video-controls {
+        padding: 0.75rem;
+        gap: 0.5rem;
+    }
+
+    .video-controls .control-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+    }
+
+    .volume-label {
+        font-size: 0.7rem;
+        min-width: 45px;
+    }
+}

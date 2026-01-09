@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Server</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+
+        .invite-container {
+            background: #36393f;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 480px;
+            width: 90%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .invite-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .invite-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .invite-subtitle {
+            color: #b9bbbe;
+            font-size: 14px;
+        }
+
+        .server-info {
+            background: #2f3136;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .server-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #5865f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 700;
+            margin: 0 auto 16px;
+        }
+
+        .server-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .server-members {
+            color: #b9bbbe;
+            font-size: 14px;
+        }
+
+        .invite-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: #5865f2;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #4752c4;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
+        }
+
+        .btn-primary:disabled {
+            background: #4e5058;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #b9bbbe;
+            border: 2px solid #4e5058;
+        }
+
+        .btn-secondary:hover {
+            border-color: #72767d;
+        }
+
+        .error-message {
+            background: #ed4245;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 3px solid #4e5058;
+            border-top: 3px solid #5865f2;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .inviter-info {
+            color: #b9bbbe;
+            font-size: 13px;
+            text-align: center;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="invite-container">
+        <div id="loadingState" class="loading">
+            <div class="spinner"></div>
+            <p>Loading invite...</p>
+        </div>
+
+        <div id="errorState" style="display: none;">
+            <div class="error-message" id="errorMessage">Invalid or expired invite</div>
+            <div class="invite-actions">
+                <button class="btn btn-secondary" onclick="window.location.href='/'">Go Home</button>
+            </div>
+        </div>
+
+        <div id="inviteState" style="display: none;">
+            <div class="invite-header">
+                <h1 class="invite-title">You've been invited!</h1>
+                <p class="invite-subtitle">Join this server to start chatting</p>
+            </div>
+
+            <div class="server-info">
+                <div class="server-icon" id="serverIcon">S</div>
+                <div class="server-name" id="serverName">Server Name</div>
+                <div class="server-members" id="serverMembers">Loading...</div>
+            </div>
+
+            <div class="inviter-info" id="inviterInfo"></div>
+
+            <div class="invite-actions">
+                <button class="btn btn-primary" id="joinBtn" onclick="joinServer()">
+                    Join Server
+                </button>
+                <button class="btn btn-secondary" onclick="window.location.href='/'">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const inviteCode = window.location.pathname.split('/').pop();
+        let inviteData = null;
+
+        async function loadInvite() {
+            try {
+                const res = await fetch(`/api/invite/${inviteCode}`);
+                const data = await res.json();
+
+                if (!data.success) {
+                    showError(data.message);
+                    return;
+                }
+
+                inviteData = data.invite;
+                displayInvite(inviteData);
+            } catch (err) {
+                console.error('Error loading invite:', err);
+                showError('Failed to load invite');
+            }
+        }
+
+        function displayInvite(invite) {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('inviteState').style.display = 'block';
+
+            // Set server info
+            const serverName = invite.server.name;
+            document.getElementById('serverName').textContent = serverName;
+            document.getElementById('serverIcon').textContent = serverName[0].toUpperCase();
+            
+            // Set inviter info
+            if (invite.inviter) {
+                document.getElementById('inviterInfo').textContent = 
+                    `Invited by ${invite.inviter.name}`;
+            }
+        }
+
+        function showError(message) {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'block';
+            document.getElementById('errorMessage').textContent = message;
+        }
+
+        async function joinServer() {
+            const joinBtn = document.getElementById('joinBtn');
+            joinBtn.disabled = true;
+            joinBtn.textContent = 'Joining...';
+
+            try {
+                const res = await fetch(`/api/invite/${inviteCode}/join`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    // Redirect to server
+                    window.location.href = `/server/${data.server._id}`;
+                } else {
+                    alert('Error joining server: ' + data.message);
+                    joinBtn.disabled = false;
+                    joinBtn.textContent = 'Join Server';
+                }
+            } catch (err) {
+                console.error('Error joining server:', err);
+                alert('Failed to join server');
+                joinBtn.disabled = false;
+                joinBtn.textContent = 'Join Server';
+            }
+        }
+
+        // Load invite on page load
+        loadInvite();
+    </script>
+</body>
+</html>

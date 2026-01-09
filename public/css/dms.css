@@ -1,0 +1,173 @@
+       * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green-dark: #284139;
+            --green-light: #80906e;
+            --beige: #f8e794;
+            --orange: #b86890;
+            --black: #111419;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, var(--green-dark) 0%, #1a2f28 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            color: var(--beige);
+        }
+
+        .home-container {
+            width: 100%;
+            max-width: 1000px;
+            text-align: center;
+        }
+
+        .welcome-section {
+            margin-bottom: 4rem;
+        }
+
+        .welcome-section h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--beige);
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .welcome-section .username {
+            color: var(--orange);
+            font-weight: 800;
+        }
+
+        .welcome-section p {
+            font-size: 1.2rem;
+            color: var(--green-light);
+            margin-top: 0.5rem;
+        }
+
+        .navigation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .nav-card {
+            background: rgba(17, 20, 25, 0.85);
+            backdrop-filter: blur(10px);
+            border: 3px solid var(--green-light);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-decoration: none;
+            color: var(--beige);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--green-light) 0%, var(--orange) 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 0;
+        }
+
+        .nav-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--beige);
+            box-shadow: 0 12px 32px rgba(184, 104, 144, 0.3);
+        }
+
+        .nav-card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .nav-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--beige);
+        }
+
+        .nav-description {
+            font-size: 0.95rem;
+            color: var(--green-light);
+            line-height: 1.5;
+        }
+
+        /* Special styling for featured cards */
+        .nav-card.featured {
+            border-color: var(--orange);
+        }
+
+        .nav-card.featured:hover {
+            border-color: var(--beige);
+            box-shadow: 0 12px 32px rgba(184, 104, 144, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .welcome-section h1 {
+                font-size: 2rem;
+            }
+
+            .welcome-section p {
+                font-size: 1rem;
+            }
+
+            .navigation-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .nav-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .nav-icon {
+                font-size: 2.5rem;
+            }
+
+            .nav-title {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem;
+            }
+
+            .welcome-section h1 {
+                font-size: 1.75rem;
+            }
+
+            .welcome-section {
+                margin-bottom: 2rem;
+            }
+        }

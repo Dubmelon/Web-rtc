@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="title"><%= user.name%>'s Profile</title>
+    <link rel="stylesheet" href="/css/profile.css">
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-header"></div>
+        <form action="/profile" method="post" id="profileForm">
+            <div class="profile-picture-section">
+                <div class="profile-picture-wrapper">
+                    <div class="profile-picture" id="profilePic">
+                        <% if (hasPfp) { %>
+                            <img src="/images/<%= user.pfp.fileId %>" alt="Profile Picture"
+                                style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;"/>
+                        <% } else { %>
+                            <div style="width: 150px; height: 150px; border-radius: 50%; background: #ccc; display: flex; align-items: center; justify-content: center;">
+                                <span>No Photo</span>
+                            </div>
+                        <% } %>
+                    </div>
+                    
+                    <!-- Only show upload button if viewing own profile and in edit mode -->
+                    <div class="upload-btn-wrapper" id="uploadBtnWrapper" style="display: none;">
+                        <label for="pfpInput" class="upload-btn"></label>
+                        <input type="file" id="pfpInput" class="file-input" accept="image/*">
+                    </div>
+                </div>
+
+                <div class="profile-info">
+                    <h1 class="profile-name"><%= user.name%></h1>
+                    <p class="profile-username">@<%= user.name%></p>
+
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">1,234</span>
+                            <span class="stat-label">Messages</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">5,678</span>
+                            <span class="stat-label">Followers</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">890</span>
+                            <span class="stat-label">Following</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="uploadStatus" class="upload-status"></div>
+            </div>
+
+            <div class="profile-content">
+                <div class="section">
+                    <h2 class="section-title">About Me</h2>
+                    <div class="bio-text">
+                        <textarea class="bio" name="bio" id="bioInput" placeholder="Tell us about yourself..." readonly><%= user.bio || '' %></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title">Profile Information</h2>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-icon">📍</div>
+                            <div class="info-content">
+                                <div class="info-label">Location</div>
+                                <label type="text" class="info-value info-input" name="location" id="locationInput" value="<%= user.location%>" >
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">💼</div>
+                            <div class="info-content">
+                                <div class="info-label">Occupation</div>
+                                <label type="text" class="info-value info-input" name="job" id="jobInput" value="<%= user.occupation%>" >
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">🎂</div>
+                            <div class="info-content">
+                                <div class="info-label">Joined</div>
+                                <div class="info-value"><%= user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A' %></div>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">🌐</div>
+                            <div class="info-content">
+                                <div class="info-label">Website</div>
+                                <label type="text" class="info-value info-input" name="site" id="siteInput" value="<%= user.website%>" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Only show action buttons if viewing own profile -->
+                <% if (isOwner) { %>
+                <div class="action-buttons">
+                    <button type="button" class="btn btn-primary" id="editBtn">Edit Profile</button>
+                    <button type="submit" class="btn btn-primary" id="saveBtn" style="display: none;">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" id="cancelBtn" style="display: none;">Cancel</button>
+                </div>
+                <% } %>
+            </div>
+        </form>
+    </div>
+
+    <script src="/js/profile.js"></script>
+</body>
+</html>

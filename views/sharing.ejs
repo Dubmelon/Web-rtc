@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="https://unpkg.com/peerjs@1.5.5/dist/peerjs.min.js"></script>
+    <script src="/socket.io/socket.io.js" defer></script>
+    <script src="/js/sharing-script.js" defer></script>
+    <link rel="stylesheet" href="/css/room.css">
+    <title>Sharing screen!</title>
+
+</head>
+<header class="header">
+        <div class="header-left">
+            <div class="room-info">
+                <div class="room-title">Screen Share</div>
+                <div class="room-id">Room: <span id="room-id-display">Screen Share</span></div>
+            </div>
+        </div>
+        <div class="participant-count">
+            <span id="participant-count">3</span> Participants
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div id="video-grid"></div>
+        <div id="empty-state" class="empty-state">
+            <h2>Waiting for participants...</h2>
+            <p>Share the room link to invite others</p>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="control-btn" onclick="toggleScreenShare()">🖵</button>
+        <span></span>
+        <button class="control-btn" id="toggle-video" title="Toggle Camera">
+            <span id="video-icon">📹</span>
+        </button>
+        <button class="control-btn" id="toggle-audio" title="Toggle Microphone">
+            <span id="audio-icon">🎤</span>
+        </button>
+        <button class="control-btn danger" id="leave-call" title="Leave Call">
+            <span>📞</span>
+        </button>
+
+    </div>
+</body>
+</html>

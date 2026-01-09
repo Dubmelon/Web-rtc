@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Servers</title>
+    <link rel="stylesheet" href="/css/serverDiscover.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Servers</h1>
+            <div class="header-controls">
+                <select id="serverFilter" class="filter-dropdown">
+                    <option value="my-servers">My Servers</option>
+                    <option value="all-servers">All Servers</option>
+                </select>
+                <a href="/create-servers" class="create-server-btn">+ Create Server</a>
+            </div>
+        </div>
+
+        <div id="serversContainer">
+            <% if (servers && servers.length > 0) { %>
+                <div class="servers-grid">
+                    <% servers.forEach(server => { %>
+                        <a href="/serverId/<%= server._id %>" class="server-card">
+                            <div class="server-icon">
+                                <% if (server.icon) { %>
+                                    <img src="/images/<%= server.icon %>" alt="<%= server.name %>">
+                                <% } else { %>
+                                    <%= server.name.charAt(0).toUpperCase() %>
+                                <% } %>
+                            </div>
+                            <div class="server-name"><%= server.name %></div>
+                            <div class="server-description">
+                                <%= server.description || 'No description' %>
+                            </div>
+                            <div class="server-info">
+                                <div class="info-item">
+                                    <div class="info-label">Members</div>
+                                    <div class="info-value"><%= server.members ? server.members.length : 0 %></div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Owner</div>
+                                    <div class="info-value"><%= server.owner.name %></div>
+                                </div>
+                            </div>
+                            <% if (server.owner._id.toString() === userId) { %>
+                                <div style="text-align: center;">
+                                    <span class="owner-badge">👑 Owner</span>
+                                </div>
+                            <% } %>
+                        </a>
+                    <% }); %>
+                </div>
+            <% } else { %>
+                <div class="no-servers">
+                    <h2>No Servers Yet</h2>
+                    <p>You haven't joined or created any servers yet. Create your first server to get started!</p>
+                    <a href="/create-servers" class="create-server-btn">Create Your First Server</a>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <script src="/js/serverDiscover.js"></script>
+</body>
+</html>
